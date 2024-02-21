@@ -8,6 +8,11 @@ app = Flask(__name__)
 CORS(app, origins=['*'])
 
 
+@app.route("/", methods=["GET"])
+def index():
+    return {"message": "App is running."}
+
+
 @app.route("/preview", methods=["GET"])
 def preview():
     url = request.args.get("url")
