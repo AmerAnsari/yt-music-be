@@ -25,7 +25,7 @@ def format_count(count):
 def format_seconds(seconds):
     time = str(timedelta(seconds=int(seconds)))
     parts = time.split(":")
-    if parts[0] is '0':
+    if parts[0] == '0':
         return ":".join([parts[1], parts[2]])
     else:
         return time
