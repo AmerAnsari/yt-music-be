@@ -1,0 +1,11 @@
+.*
+!.coveragerc
+!.env
+!.pylintrc
+__pycache__
+cache
+node_modules
+media
+media_test
+staticfiles
+webpack_bundles
