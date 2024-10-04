@@ -1,6 +1,6 @@
 from flask import Flask, send_file, request
 from flask_cors import CORS
-from pytube import YouTube, Search
+from pytubefix import YouTube, Search
 
 from utils import video_details_serializer, check_storage, TEMP_PATH
 

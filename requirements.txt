@@ -1,4 +1,4 @@
-pytube==15.0.0
+pytubefix==7.2.2
 Flask==3.0.1
 Flask-Cors==4.0.0
 gunicorn==22.0.0
