@@ -1,5 +1,3 @@
-from typing import Tuple
-
 from flask import Flask, send_file, request
 from flask_cors import CORS
 from pytubefix import YouTube, Search
@@ -8,11 +6,6 @@ from utils import video_details_serializer, check_storage, TEMP_PATH
 
 app = Flask(__name__)
 CORS(app, origins=['*'])
-
-def token_verifier() -> Tuple[str, str]:
-   po_token = "MlewiGIKD1ZtnbDIHYcl9Hrhi8BqWugwl-07_cTJ9TCuUPHGpVCY0dIgdQkRIV75Zz4IMUz-LtaMPHgzUb4Twij7biEeSCQIKcklYLRYxVec1IuH3KrYV5M="
-   visitor_data = "CgtQWWdoWkZhaTFrRSiV45K4BjIKCgJBRRIEGgAgGA%3D%3D"
-   return visitor_data, po_token
 
 
 @app.route("/", methods=["GET"])
@@ -30,7 +23,7 @@ def preview():
 @app.route("/search", methods=["GET"])
 def search():
     search_query = request.args.get("search")
-    search_results = Search(search_query, use_po_token=True, po_token_verifier=token_verifier)
+    search_results = Search(search_query)
     return [video_details_serializer(item.vid_info["videoDetails"]) for item in search_results.videos]
 
 
