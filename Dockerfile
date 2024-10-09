@@ -25,6 +25,8 @@ RUN pip --no-cache-dir install --prefer-binary -r requirements.txt
 # Copy the rest of the application code
 COPY . .
 
+RUN npm install
+
 # Ensure docker_entry_point.sh is executable
 RUN chmod +x /code/bin/docker_entry_point.sh
 

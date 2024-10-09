@@ -1,3 +1,7 @@
+import json
+from typing import Tuple, NamedTuple
+
+import nodejs
 from flask import Flask, send_file, request
 from flask_cors import CORS
 from pytubefix import YouTube, Search
@@ -6,6 +10,17 @@ from utils import video_details_serializer, check_storage, TEMP_PATH
 
 app = Flask(__name__)
 CORS(app, origins=['*'])
+
+
+class PoToken(NamedTuple):
+    visitorData: str
+    poToken: str
+
+
+def token_verifier(token: PoToken) -> Tuple[str, str]:
+    visitor_data = token.visitorData
+    po_token = token.poToken
+    return visitor_data, po_token
 
 
 @app.route("/", methods=["GET"])
@@ -23,7 +38,12 @@ def preview():
 @app.route("/search", methods=["GET"])
 def search():
     search_query = request.args.get("search")
-    search_results = Search(search_query)
+
+    output = nodejs.run(['bin/generate-po-token.js'], capture_output=True)
+    token = json.loads(output.stdout.decode('utf-8'))
+    po_token = PoToken(**token)
+
+    search_results = Search(search_query, use_po_token=True, po_token_verifier=token_verifier(po_token))
     return [video_details_serializer(item.vid_info["videoDetails"]) for item in search_results.videos]
 
 
