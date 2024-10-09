@@ -43,7 +43,10 @@ def search():
     token = json.loads(output.stdout.decode('utf-8'))
     po_token = PoToken(**token)
 
-    search_results = Search(search_query, use_po_token=True, po_token_verifier=token_verifier(po_token))
+    def po_token_verifier(_: None = None) -> Tuple[str, str]:
+        return token_verifier(po_token)
+
+    search_results = Search(search_query, use_po_token=True, po_token_verifier=po_token_verifier)
     return [video_details_serializer(item.vid_info["videoDetails"]) for item in search_results.videos]
 
 
